@@ -13,13 +13,15 @@ clonecord replicates essential features of Discord such as text chats and user g
 - Channel-based communication
 - Clean and modern interface
 
-## Technologies
+### Tech Stack
+- Electron + React (Vite) for desktop client
+- Express + MongoDB for backend API
+- JWT authentication
+- Jest/Supertest for backend testing
 
-- Frontend: React + TypeScript + TailwindCSS
-- Backend: Express.js + TypeScript + MongoDB
-- Tests: Jest + Supertest (API)
-- CI/CD: Github Actions
-- Auth: JWT (with refresh token)
+### Structure
+- `electron-app/` – client
+- `server/` – backend API
 
 
 ## MVP Checklist
