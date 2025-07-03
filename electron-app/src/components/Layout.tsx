@@ -1,7 +1,6 @@
 import SideBar from './Sidebar';
 import Channelspanel from './ChannelsPanel';
 import MainArea from './MainArea';
-import { FaReact } from 'react-icons/fa';
 
 const Layout = () => {
     return (

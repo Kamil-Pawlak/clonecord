@@ -1,4 +1,4 @@
-import React from 'react'
+
 import Tooltip from './Tooltip'
 
 type Server = {
@@ -8,7 +8,8 @@ type Server = {
 }
 
 type Props = {
-  servers: Server[]
+  servers: Server[],
+  onServerSelect?: (server: Server) => void
 }
 
 const Sidebar = ({ servers }: Props) => {
