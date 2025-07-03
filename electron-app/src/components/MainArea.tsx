@@ -5,7 +5,11 @@ type Props = {}
 const MainArea = (props: Props) => {
   return (
     <div className="flex-1 relative bg-gray-800 h-full text-white pt-4">
-        <h1 className="text-2xl font-bold m-4">Main Area</h1>
+      <div className="w-full bg-gray-800 border-gray-500 border-b-1 p-4 fixed top-0">General chat</div>
+        <h1 className="text-2xl font-bold p-20 pl-10 h-full bg-gray-800 flex flex-col place-content-end">
+          <p>Test message 1</p>
+          <p>Test message 2</p>
+        </h1>
         {/* input for typing messages at the bottom of the container*/}
         <div className="w-full fixed bottom-0 p-4 bg-gray-800 border-t border-gray-600">
             <input
