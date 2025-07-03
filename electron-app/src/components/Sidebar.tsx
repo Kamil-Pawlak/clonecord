@@ -14,7 +14,7 @@ type Props = {
 
 const Sidebar = ({ servers }: Props) => {
   return (
-    <div className="w-16 bg-gray-800 h-full text-white flex flex-col items-center gap-2 pt-2">
+    <div className="w-16 bg-gray-900 h-full text-white flex flex-col items-center gap-2 pt-2">
       {servers.map((server) => (
         <div className='rounded-full bg-neutral-800 aspect-square w-12 p-1 transition duration-200 ease-in-out hover:scale-110' key={server.id}>
             <Tooltip message={server.title}>
