@@ -6,7 +6,7 @@ type Props = {
   onChannelSelect?: (channel: { id: string; name: string }) => void;
 }
 
-const Channelspanel = (props: Props) => {
+const ChannelsPanel = (props: Props) => {
 
   
   const channels = [
@@ -25,4 +25,4 @@ const Channelspanel = (props: Props) => {
   )
 }
 
-export default Channelspanel
+export default ChannelsPanel
