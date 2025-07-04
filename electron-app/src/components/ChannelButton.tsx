@@ -1,20 +1,19 @@
 
-type Channel = {
-    id: string;
-    name: string;
-};
+import {Channel} from '../types/channel';
 
 type Props = {
     channel: Channel;
+    isActive: boolean;
     onChannelSelect?: (channel: Channel) => void;
 };
 
-function ChannelButton({ channel, onChannelSelect }: Readonly<Props>) {
+function ChannelButton(props: Readonly<Props>) {
+
     return (
         <button
             type="button"
-            className="p-0.5 rounded-2xl transform duration-200 hover:bg-neutral-300/5 text-left"
-            onClick={() => onChannelSelect?.(channel)}
+            className={`p-0.5 rounded-2xl transform duration-200 hover:bg-neutral-300/5 text-left ${props.isActive ? 'bg-gray-700' : ''}`}
+            onClick={() => props.onChannelSelect?.(props.channel)}
         >
             <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -29,7 +28,7 @@ function ChannelButton({ channel, onChannelSelect }: Readonly<Props>) {
                 <line x1="10" y1="5" x2="7" y2="20" strokeLinecap="round" strokeLinejoin="round" />
                 <line x1="16" y1="5" x2="13" y2="20" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-            <span className="text-white">{channel.name}</span>
+            <span className="text-white">{props.channel.name}</span>
         </button>
     );
 }
