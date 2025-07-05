@@ -1,5 +1,5 @@
 import request from 'supertest';
-import app from '../src/app';
+import app from '../app';
 
 describe("GET /channels", () =>{
     it("should return list of available channels", async () =>{
