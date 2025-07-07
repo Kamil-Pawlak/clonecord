@@ -9,6 +9,7 @@ type Props = {
   onChannelSelect?: (channel: Channel) => void;
 }
 
+  const PORT = import.meta.env.VITE_PORT ?? 5000;
 
 const ChannelsPanel = (props: Props) => {
 
@@ -16,7 +17,7 @@ const ChannelsPanel = (props: Props) => {
     data: channels,
     error,
     isValidating,
-  } = useSWR<Array<Channel>>('http://localhost:5000/channels', request);
+  } = useSWR<Array<Channel>>(`http://localhost:${PORT}/channels`, request);
 
    if (error) return <div className="w-64 bg-gray-800 h-full border-gray-500 border-1 text-white p-2 flex flex-col gap-0.5">Failed to load</div>;
   if (isValidating) return <div className="w-64 bg-gray-800 h-full border-gray-500 border-1 text-white p-2 flex flex-col gap-0.5">Loading</div>;
