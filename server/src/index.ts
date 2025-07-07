@@ -1,5 +1,12 @@
 import app from './app';
+import dotenv from 'dotenv';
 
-app.listen(5000, () => {
-  console.log("Server is running on port 5000");
+dotenv.config();
+const PORT = process.env.PORT ?? 5000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
+
+//run the database connection
+import {run} from './db/mongo';
+run().catch(console.dir);
