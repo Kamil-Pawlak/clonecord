@@ -8,7 +8,14 @@ const router = express.Router();
 
 router.get('/', async (req,res) =>{
     const channels = await ChannelModel.find({});
-    res.json(channels);
+    const mapped = channels.map((channel) => {
+        return {
+            id: channel._id.toString(),
+            name: channel.name,
+            serverId: channel.serverId
+        } as Channel;
+    });
+    res.json(mapped);
 });
 
 router.post('/', async (req, res) => {
