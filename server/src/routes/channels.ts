@@ -1,18 +1,24 @@
 import express from 'express'
 import {Channel} from '../types/channel';
 import { randomUUID } from 'crypto';
+import ChannelModel from '../models/channel';
 
 const router = express.Router();
 
-let channels: Array<Channel> = [];
 
-router.get('/', (req,res) =>{
-    res.json(
-        channels
-    );
+router.get('/', async (req,res) =>{
+    const channels = await ChannelModel.find({});
+    const mapped = channels.map((channel) => {
+        return {
+            id: channel._id.toString(),
+            name: channel.name,
+            serverId: channel.serverId
+        } as Channel;
+    });
+    res.json(mapped);
 });
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
     if(!req.body)
     {
         res.status(400).json();
@@ -24,7 +30,11 @@ router.post('/', (req, res) => {
        res.status(400).json({error: "Invalid channel name"});
     }
     else{
-        channels.push({id: `${randomUUID()}`, name: req.body.name});
+        const channelData = {
+            serverId: "default",
+            name: name.trim()
+        };
+        await ChannelModel.create(channelData);
         res.status(201).json();
     }
    

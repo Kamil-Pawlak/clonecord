@@ -1,6 +1,7 @@
 import request from 'supertest';
 import app from '../app';
 
+
 describe("GET /channels", () =>{
     it("should return list of available channels", async () =>{
         const res = await request(app)
@@ -61,6 +62,4 @@ describe("POST /channels", () =>{
         .expect(400);
     })
 });
-
-
 
