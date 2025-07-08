@@ -13,7 +13,7 @@ app.get('/', (_req, res) =>{
 });
 
 app.use('/channels', channelsRouter);
-app.use('servers', serversRouter);
+app.use('/servers', serversRouter);
 
 
 export default app;
