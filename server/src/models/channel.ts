@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const channelSchema = new Schema({
-    serverId: {type: String, required: true},
+    serverId: {type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Server'},
     name: {type: String, required: true}
 
 });
