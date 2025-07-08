@@ -1,8 +1,6 @@
-interface Server {
+export interface Server {
     id: string;
     name: string;
     ownerId: string;
     createdAt: Date;
 }
-
-export default Server;

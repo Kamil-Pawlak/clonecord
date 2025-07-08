@@ -1,19 +1,36 @@
 import request from 'supertest';
 import app from '../app';
+import ServerModel from '../models/server';
+
+let testServerId: string;
+
+beforeEach(async () =>{
+    const testServer = new ServerModel({name: 'TestServer', ownerId: "123"});
+    await testServer.save();
+    testServerId = testServer._id.toString();
+});
 
 
-describe("GET /channels", () =>{
+describe('GET /channels', () =>{
     it("should return list of available channels", async () =>{
         const res = await request(app)
-        .get("/channels")
+        .get(`/channels?serverId=${testServerId}`)
         .expect("Content-Type", /json/)
-        .expect(200);
+        .expect(201);
 
         expect(Array.isArray(res.body)).toBe(true);
         res.body.forEach((item: { id:string; name: string }) => {
-            expect(typeof item.id).toBe("string");
-            expect(typeof item.name).toBe("string");
+            expect(typeof item).toBe('Channel');
         });
+    });
+});
+
+describe("GET /channels", () =>{
+    it("get channels without serverId", async () =>{
+        await request(app)
+        .get("/channels")
+        .expect("Content-Type", /json/)
+        .expect(400);
     });
 });
 
@@ -22,7 +39,7 @@ describe("POST /channels", () =>{
         //test good input
         await request(app)
         .post("/channels")
-        .send({name: "test channel"})
+        .send({name: "test channel", serverId: testServerId})
         .expect("Content-Type", /json/)
         .expect(201);
     })

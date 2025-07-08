@@ -1,7 +1,7 @@
 import express from 'express'
 import { randomUUID } from 'crypto';
 import ServerModel from '../models/server';
-import Server from '../types/server';
+import {Server} from '../types/server';
 
 const router = express.Router();
 
