@@ -1,6 +1,7 @@
 import request from 'supertest';
 import app from '../app';
 import {Server} from '../types/server'
+import mongoose from 'mongoose';
 
 describe("GET Servers", () =>{
     it("should return list of available servers", async () =>{
@@ -23,7 +24,7 @@ describe("POST /servers", () =>{
     it("Should create a server when provided good input", async () =>{
         const res = await request(app)
         .post("/servers")
-        .send({name: "test", ownerId: "123"})
+        .send({name: "test", ownerId: mongoose.Types.ObjectId.createFromTime(0).toString()})
         .expect("Content-Type", /json/)
         expect(201);
     })

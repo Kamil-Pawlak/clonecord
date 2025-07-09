@@ -1,11 +1,12 @@
 import request from 'supertest';
 import app from '../app';
 import ServerModel from '../models/server';
+import mongoose from 'mongoose';
 
 let testServerId: string;
 
 beforeEach(async () =>{
-    const testServer = new ServerModel({name: 'TestServer', ownerId: "123"});
+    const testServer = new ServerModel({name: 'TestServer', ownerId: mongoose.Types.ObjectId.createFromTime(0)});
     await testServer.save();
     testServerId = testServer._id.toString();
 });
