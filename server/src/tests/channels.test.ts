@@ -1,11 +1,12 @@
 import request from 'supertest';
 import app from '../app';
 import ServerModel from '../models/server';
+import mongoose from 'mongoose';
 
 let testServerId: string;
 
 beforeEach(async () =>{
-    const testServer = new ServerModel({name: 'TestServer', ownerId: "123"});
+    const testServer = new ServerModel({name: 'TestServer', ownerId: mongoose.Types.ObjectId.createFromTime(0)});
     await testServer.save();
     testServerId = testServer._id.toString();
 });
@@ -16,7 +17,7 @@ describe('GET /channels', () =>{
         const res = await request(app)
         .get(`/channels?serverId=${testServerId}`)
         .expect("Content-Type", /json/)
-        .expect(201);
+        .expect(200);
 
         expect(Array.isArray(res.body)).toBe(true);
         res.body.forEach((item: { id:string; name: string }) => {

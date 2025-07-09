@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import channelsRouter from './routes/channels';
 import serversRouter from './routes/servers';
+import usersRouter from './routes/user';
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.get('/', (_req, res) =>{
 
 app.use('/channels', channelsRouter);
 app.use('/servers', serversRouter);
+app.use('/user', usersRouter);
 
 
 export default app;
