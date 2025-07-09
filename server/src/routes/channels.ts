@@ -1,6 +1,4 @@
 import express from 'express'
-import {Channel} from '../types/channel';
-import { randomUUID } from 'crypto';
 import ChannelModel from '../models/channel';
 import mongoose from 'mongoose';
 
@@ -14,7 +12,7 @@ router.get('/', async (req,res) =>{
         return;
     }
     const channels = await ChannelModel.find({serverId});
-    res.status(201).json(channels.map(channel =>({
+    res.status(200).json(channels.map(channel =>({
         id: channel._id.toString(),
         name: channel.name,
         serverId: channel.serverId.toString()

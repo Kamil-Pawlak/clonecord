@@ -17,7 +17,7 @@ describe('GET /channels', () =>{
         const res = await request(app)
         .get(`/channels?serverId=${testServerId}`)
         .expect("Content-Type", /json/)
-        .expect(201);
+        .expect(200);
 
         expect(Array.isArray(res.body)).toBe(true);
         res.body.forEach((item: { id:string; name: string }) => {
