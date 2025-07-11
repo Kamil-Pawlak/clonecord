@@ -14,7 +14,6 @@ export const setup = async () => {
     });
     const uri = mongod.getUri();
     process.env.MONGO_URI = uri;
-    console.log(`MongoDB Memory Server started at ${uri}`);
 };
 
 export const teardown = async () => {
