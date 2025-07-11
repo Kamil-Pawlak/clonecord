@@ -1,11 +1,11 @@
 import request from 'supertest';
 import app from '../app';
 
-describe('POST /user', () => {
+describe('POST /user/register', () => {
     it("should create user", async () =>{
         const res = await request(app)
-        .post('/user')
-        .send({username: "Test", email: "test@test.com"})
+        .post('/user/register')
+        .send({username: "Test", email: "test@test.com", password: "YouShallNotPass"})
         .expect("Content-Type", /json/)
         .expect(201);
 
@@ -16,3 +16,27 @@ describe('POST /user', () => {
     });
 });
 
+describe('POST /user/register', () => {
+    it("should fail because of wrong body", async () =>{
+        await request(app)
+        .post('/user/register')
+        .send({})
+        .expect("Content-Type", /json/)
+        .expect(400);
+    });
+});
+
+
+describe('POST /user/register', () => {
+    it("should fail because of duplicate email", async () =>{
+        await request(app)
+        .post('/user/register')
+        .send({username: "Test", email: "test@test.com", password: "YouShallNotPass"})
+
+        await request(app)
+        .post('/user/register')
+        .send({username: "Test", email: "test@test.com", password: "YouShallNotPass"})
+        .expect("Content-Type", /json/)
+        .expect(409);
+    });
+});
