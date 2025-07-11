@@ -1,9 +1,12 @@
 import express from 'express';
 import UserModel from '../models/user';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+
 
 const router = express.Router();
-
+dotenv.config();
 
 router.post('/register', async (req, res) => {
     if(!req.body || req.body == undefined)
@@ -38,6 +41,42 @@ router.post('/register', async (req, res) => {
         {
             res.status(400).json({error: "There was an error!" + e});
 
+        }
+    }
+});
+
+
+router.post('/login', async (req,res) =>{
+    if(!req.body)
+    {
+        res.status(400).json({error: "Invalid request. Empty or non present body."});
+        return;
+    }
+    const {email, password} = req.body;
+    if(!email || email.trim() == "" || !password || password.trim() == "")
+    {
+        res.status(400).json({error: "email or password missing"});
+    }else{
+        try{
+            let user = await UserModel.findOne({email});
+            if(!user || !await bcrypt.compare(password, user.hashedPassword))
+            {
+                res.status(400).json({error: "Invalid credentials"});
+                return;
+            }
+            //login succesfull
+            const token = jwt.sign(
+                {userId: user._id.toString(), tokenVersion: user.tokenVersion}, 
+                process.env.JWT_SECRET!,
+                {expiresIn: "7d"});
+            res.status(200).json({
+                token: token
+            })
+
+        }catch(e)
+        {
+            res.status(500).end();
+            console.log("/user/login error: " + e);
         }
     }
 });

@@ -40,3 +40,75 @@ describe('POST /user/register', () => {
         .expect(409);
     });
 });
+
+//login tests
+describe('POST /user/login', () =>{
+    it("Should return token and code 200", async () =>{
+        //first create a user
+        await request(app)
+        .post('/user/register')
+        .send({username: "Test", email: "test@test.com", password: "YouShallNotPass"});
+
+        //test login
+        const res = await request(app)
+        .post('/user/login')
+        .send({email: "test@test.com", password: "YouShallNotPass"})
+        .expect("Content-Type", /json/)
+        .expect(200);
+
+        expect(res.body.token).not.toBeNull();
+    });
+});
+
+describe('POST /user/login', () =>{
+    it("Should return 400 (empty body)", async () =>{
+        await request(app)
+        .post('/user/login')
+        .send()
+        .expect("Content-Type", /json/)
+        .expect(400);
+    });
+});
+
+describe('POST /user/login', () =>{
+    it("Should return 400 (missing email)", async () =>{
+        const res = await request(app)
+        .post('/user/login')
+        .send({password: "YouShallNotPass"})
+        .expect("Content-Type", /json/)
+        .expect(400);
+    });
+});
+
+describe('POST /user/login', () =>{
+    it("Should return 400 Invalid credentials (bad password)", async () =>{
+        //first create a user
+        await request(app)
+        .post('/user/register')
+        .send({username: "Test", email: "test@test.com", password: "YouShallNotPass"});
+
+        //test login
+        await request(app)
+        .post('/user/login')
+        .send({email: "test@test.com", password: "YouShallPass"})
+        .expect("Content-Type", /json/)
+        .expect(400);
+    });
+});
+
+describe('POST /user/login', () =>{
+    it("Should return 400 Invalid credentials (bad email)", async () =>{
+        //first create a user
+        await request(app)
+        .post('/user/register')
+        .send({username: "Test", email: "test@test.com", password: "YouShallNotPass"});
+
+        //test login
+        await request(app)
+        .post('/user/login')
+        .send({email: "bad@test.com", password: "YouShallNotPass"})
+        .expect("Content-Type", /json/)
+        .expect(400);
+    });
+});
+
