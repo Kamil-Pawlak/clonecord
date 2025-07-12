@@ -3,6 +3,7 @@ import cors from "cors";
 import channelsRouter from './routes/channels';
 import serversRouter from './routes/servers';
 import usersRouter from './routes/user';
+import authenticate from "./middleware/auth";
 
 const app = express();
 
