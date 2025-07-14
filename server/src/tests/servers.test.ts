@@ -5,17 +5,26 @@ import mongoose from 'mongoose';
 import ServerModel from '../models/server';
 
 let testServerId: string;
+let authToken: string;
 
 beforeEach(async () =>{
     const testServer = new ServerModel({name: 'TestServer', ownerId: mongoose.Types.ObjectId.createFromTime(0)});
     await testServer.save();
     testServerId = testServer._id.toString();
+
+    //create user
+    let res = await request(app)
+    .post('/user/register')
+    .send({ username: "TestUser", email: "test@example.com", password: "password" });
+
+    authToken = res.body.token;
 });
 
 describe("GET Servers", () =>{
     it("should return list of available servers", async () =>{
         const res = await request(app)
         .get('/servers')
+        .set('Authorization', `Bearer ${authToken}`)
         .expect("Content-Type", /json/)
         .expect(200);
 
@@ -33,6 +42,7 @@ describe("POST /servers", () =>{
     it("Should create a server when provided good input", async () =>{
         await request(app)
         .post("/servers")
+        .set('Authorization', `Bearer ${authToken}`)
         .send({name: "test", ownerId: testServerId})
         .expect("Content-Type", /json/)
         expect(201);
@@ -44,6 +54,7 @@ describe("POST /servers (bad input)", () =>{
     it("Should fail when input is missing", async () => {
         await request(app)
             .post("/servers")
+            .set('Authorization', `Bearer ${authToken}`)
             .send()
             .expect("Content-Type", /json/)
             .expect(400);
@@ -52,8 +63,14 @@ describe("POST /servers (bad input)", () =>{
 
 describe('get /servers/:id/members', () => { 
     it("should return list of members on given server", async () =>{
+        await request(app)
+        .post(`/servers/${testServerId}/join`)
+        .set('Authorization', `Bearer ${authToken}`)
+        .send()
+
         const res = await request(app)
         .get(`/servers/${testServerId}/members`)
+        .set('Authorization', `Bearer ${authToken}`)
         .send()
         .expect("Content-Type", /json/)
         .expect(200);
@@ -67,6 +84,7 @@ describe('get /servers/:id/members', () => {
     it("should return 400 (invalid id)", async () =>{
         await request(app)
         .get(`/servers/${invalidId}/members`)
+        .set('Authorization', `Bearer ${authToken}`)
         .send()
         .expect("Content-Type", /json/)
         .expect(400);
@@ -78,6 +96,7 @@ describe('get /servers/:id/members', () => {
     it("should return 404 (non existent server)", async () =>{
         await request(app)
         .get(`/servers/${invalidId}/members`)
+        .set('Authorization', `Bearer ${authToken}`)
         .send()
         .expect("Content-Type", /json/)
         .expect(404);
@@ -88,7 +107,8 @@ describe('servers/:id/join', () => {
     it("should return list of members on given server", async () =>{
         await request(app)
         .post(`/servers/${testServerId}/join`)
-        .send({userId: mongoose.Types.ObjectId.createFromTime(1)})
+        .set('Authorization', `Bearer ${authToken}`)
+        .send()
         .expect(204);
     });
 });
@@ -99,6 +119,7 @@ describe('servers/:id/join', () => {
     it("should return 400 (invalid id)", async () =>{
         await request(app)
         .post(`/servers/${invalidId}/join`)
+        .set('Authorization', `Bearer ${authToken}`)
         .send({userId: mongoose.Types.ObjectId.createFromTime(1)})
         .expect("Content-Type", /json/)
         .expect(400);
@@ -111,6 +132,7 @@ describe('servers/:id/join', () => {
     it("should return 404 (non existent server)", async () =>{
         await request(app)
         .post(`/servers/${invalidId}/join`)
+        .set('Authorization', `Bearer ${authToken}`)
         .send({userId: mongoose.Types.ObjectId.createFromTime(1)})
         .expect("Content-Type", /json/)
         .expect(404);

@@ -2,11 +2,18 @@ import express from 'express'
 import ServerModel from '../models/server';
 import {Server} from '../types/server';
 import mongoose from 'mongoose';
+import authenticate from '../middleware/auth';
 
 const router = express.Router();
 
-router.get('/', async (req, res) =>{
-    const servers = await ServerModel.find();
+router.get('/', authenticate, async (req, res) =>{
+    if(!req.userId)
+    {
+        res.status(401).end();
+        return;
+    }
+    const userId = req.userId;
+    const servers = await ServerModel.find({members: userId});
     const mapped = servers.map((server) =>{
         return {
             id: server._id.toString(),
@@ -19,13 +26,14 @@ router.get('/', async (req, res) =>{
 });
 
 
-router.post('/', async (req, res) =>{
+router.post('/', authenticate, async (req, res) =>{
     if(!req.body || req.body == undefined)
     {
         res.status(400).json();
         return;
     }
-    const {name, ownerId} = req.body;
+    const {name} = req.body;
+    const ownerId = req.userId;
     if(!name || !ownerId || name.trim() == "" || ownerId.trim() == "" || typeof ownerId != 'string' || typeof name != 'string')
     {
         res.status(400).json();
@@ -42,8 +50,9 @@ router.post('/', async (req, res) =>{
     }
 });
 
-router.get('/:id/members', async (req,res) =>{
+router.get('/:id/members', authenticate, async (req,res) =>{
     const serverId = req.params.id
+    const userId = req.userId;
     if(!serverId || !mongoose.Types.ObjectId.isValid(serverId))
     {
         res.status(400).json({error: "Invalid or empty request"})
@@ -53,24 +62,29 @@ router.get('/:id/members', async (req,res) =>{
     if(!server)
     {
         res.status(404).json({error: "Server with given id does not exist"});
+        return;
     }
-    else
-        res.status(200).json(server?.members);
+    const isMember = server.members.some((member: any) =>
+        member._id.toString() === userId
+    );
+
+    if (!isMember) {
+        res.status(403).json({ error: "You are not a member of this server" });
+        return;
+    }
+
+    res.status(200).json(server.members);
+    
 });
 
-router.post('/:id/join', async (req,res) =>{
+router.post('/:id/join', authenticate, async (req,res) =>{
     const serverId = req.params.id
-    if(!serverId || !mongoose.Types.ObjectId.isValid(serverId) || !req.body)
+    if(!serverId || !mongoose.Types.ObjectId.isValid(serverId))
     {
         res.status(400).json({error: "Invalid or empty request"})
         return;
     }
-    const {userId} = req.body;
-    if(!userId || userId.trim() == "" || typeof userId != 'string' || !mongoose.Types.ObjectId.isValid(userId))
-    {
-        res.status(400).json({error: "Invalid request"});
-        return;
-    }
+    const userId = req.userId;
     const server = await ServerModel.findById(serverId);
     if(!server)
     {

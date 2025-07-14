@@ -9,10 +9,9 @@ describe('POST /user/register', () => {
         .expect("Content-Type", /json/)
         .expect(201);
 
-        expect(typeof res.body.id).toBe('string');
-        expect(typeof res.body.username).toBe('string');
-        expect(typeof res.body.email).toBe('string');
-        expect(new Date(res.body.createdAt)).not.toBe('Invalid date');
+        expect(typeof res.body.user.username).toBe('string');
+        expect(typeof res.body.user.email).toBe('string');
+        expect(new Date(res.body.user.createdAt)).not.toBe('Invalid date');
     });
 });
 
