@@ -1,10 +1,26 @@
-import { app, BrowserWindow } from 'electron'
-import { createRequire } from 'node:module'
-import { fileURLToPath } from 'node:url'
-import path from 'node:path'
+import { app, BrowserWindow } from 'electron';
+import { createRequire } from 'node:module';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
+import Store from 'electron-store';
+import { ipcMain } from 'electron';
 
-const require = createRequire(import.meta.url)
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const require = createRequire(import.meta.url);
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const store = new Store;
+
+
+ipcMain.handle('get-token', () =>{
+  return store.get('token') as string | null;
+});
+
+ipcMain.handle('set-token', (event, token: string) => {
+  store.set('token', token);
+});
+
+ipcMain.handle('delete-token', () => {
+  store.delete('token');
+});
 
 // The built directory structure
 //
