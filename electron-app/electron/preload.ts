@@ -21,4 +21,10 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
 
   // You can expose other APTs you need here.
   // ...
-})
+});
+
+contextBridge.exposeInMainWorld('auth', {
+  getToken: () => ipcRenderer.invoke('get-token'),
+  setToken: (token: string) => ipcRenderer.invoke('set-token', token),
+  deleteToken: () => ipcRenderer.invoke('delete-token'),
+});
