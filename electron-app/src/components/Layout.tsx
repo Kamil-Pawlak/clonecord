@@ -3,21 +3,21 @@ import SideBar from './Sidebar';
 import ChannelsPanel from './ChannelsPanel';
 import MainArea from './MainArea';
 import {Channel} from '../types/channel';
+import {Server} from '../types/server';
 
 const Layout = () => {
 
     const [activeChannel, setActiveChannel] = useState<Channel | null>(null);
+    const [selectedServer, setSelectedServer] = useState<Server | null>(null);
     return (
         <div className="flex h-screen">
-            <SideBar servers={[{ id: '1', icon: "https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg", title: "placeholder" }
-                , { id: '2', icon: "https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg", title: "placeholder" }
-                , { id: '3', icon: "https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg", title: "placeholder" }
-                , { id: '4', icon: "https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg", title: "placeholder" }
-                , { id: '5', icon: "https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg", title: "placeholder" }
-            ]}></SideBar>
+            <SideBar
+            selectedServer={selectedServer}
+            onServerSelect={setSelectedServer}/>
             <ChannelsPanel
             activeChannel={activeChannel}
             onChannelSelect={setActiveChannel}
+            serverId={selectedServer?.id}
             />
             <MainArea channel={activeChannel} />
 
