@@ -19,7 +19,8 @@ router.get('/', authenticate, async (req, res) =>{
             id: server._id.toString(),
             name: server.name,
             ownerId: server.ownerId,
-            createdAt: server.createdAt
+            createdAt: server.createdAt,
+            icon: server.icon
         };
     })
     res.status(200).json(mapped);
