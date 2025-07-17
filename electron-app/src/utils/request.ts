@@ -1,3 +1,5 @@
+import { logout } from "./auth";
+
 async function request<TResponse>(
   input: string | [string, RequestInit?]
 ): Promise<TResponse> {
@@ -34,9 +36,21 @@ async function request<TResponse>(
 
   const res = await fetch(url, config);
 
+  if(res.status === 401) {
+    console.warn('Unauthorized request, redirecting to login.');
+    await logout();
+  }
+
   if (!res.ok) {
-    const message = await res.text();
-    throw new Error(`Error ${res.status}: ${message}`);
+    let message = 'unknown error';
+    try{
+      const errorBody = await res.json();
+      message = errorBody.error ?? JSON.stringify(errorBody);
+    }
+    catch{
+      message = await res.text();
+    }
+    throw new Error(`${message}`);
   }
 
   return res.json() as Promise<TResponse>;

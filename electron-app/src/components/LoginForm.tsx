@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { login } from '../utils/auth';
 
 type Props =
@@ -7,6 +7,26 @@ type Props =
     }
 
 function LoginForm(props: Props) {
+    const [errorMessage, setErrorMessage] = useState('');
+
+    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const email = (form.elements.namedItem('email') as HTMLInputElement).value;
+    const password = (form.elements.namedItem('password') as HTMLInputElement).value;
+
+    try {
+        setErrorMessage('');
+        if (email && password) {
+            await login(email, password);
+        } else {
+            setErrorMessage('Email and password are required.');
+        }
+    } catch (error) {
+        setErrorMessage(error instanceof Error ? error.message : 'There was an error!' );
+    }
+}
+
     return (
         <div className=" rounded-2xl p-12 bg-gray-700 text-2xl">
             <div className='text-center'>
@@ -31,6 +51,7 @@ function LoginForm(props: Props) {
                 <button className="bg-[#5865F2] text-lg rounded mt-4 p-2 hover:bg-[#4752C4] transition-colors">
                     Log In
                 </button>
+                <p className='text-red-500 text-sm font-thin'>{errorMessage}</p>
             </form>
             <p className="text-sm text-left mt-2">Need an account?{' '}
                 <button onClick={props.onSwitch} className="text-blue-400 underline hover:cursor-pointer">
@@ -41,23 +62,6 @@ function LoginForm(props: Props) {
     )
 }
 
-async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const form = event.currentTarget;
-    const email = (form.elements.namedItem('email') as HTMLInputElement).value;
-    const password = (form.elements.namedItem('password') as HTMLInputElement).value;
 
-    try {
-        const response = await login(email, password);
-        if (response.token) {
-            window.auth.setToken(response.token);
-            console.log('Login successful:', response);
-            //restart the app or redirect to the main page
-            window.location.reload();
-        }
-    } catch (error) {
-        console.error('Login failed:', error);
-    }
-}
 
 export default LoginForm

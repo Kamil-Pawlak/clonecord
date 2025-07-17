@@ -4,12 +4,13 @@ export async function getToken(): Promise<string | null> {
     return window.auth.getToken();
 }
 
-export function logout() {
+export async function logout() {
     window.auth.deleteToken();
+    window.location.reload();
 }
 
-export function register(username: string, email: string, password: string) {
-    return request<{ token: string }>([
+export async function register(username: string, email: string, password: string) {
+    const res = await request<{ token: string }>([
         '/user/register',
         {
             method: 'POST',
@@ -19,14 +20,27 @@ export function register(username: string, email: string, password: string) {
             body: JSON.stringify({ username, email, password }),
         }
     ]);
+    if(res.token)
+    {
+        window.auth.setToken(res.token);
+        window.location.reload();
+    }
+    return res;
 }
 
-export function login(email: string, password: string) {
-    return request<{ token: string }>(['/user/login', {
+export async function login(email: string, password: string) {
+    const res = await request<{ token: string }>(['/user/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email: email, password: password }),
-    }])
+    }]);
+
+    if(res.token)
+    {
+        window.auth.setToken(res.token);
+        window.location.reload();
+    }
+    return res;
 }
