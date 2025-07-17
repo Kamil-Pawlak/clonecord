@@ -1,14 +1,15 @@
-import express from 'express';
+import express, {Request, Response} from 'express';
 import UserModel from '../models/user';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import { loginValidator, registerValidator, handleValidationErrors } from '../middleware/validation/userValidation';
 
 
 const router = express.Router();
 dotenv.config();
 
-router.post('/register', async (req, res) => {
+router.post('/register', registerValidator, handleValidationErrors, async (req: Request, res: Response) => {
     if(!req.body || req.body == undefined)
     {
         res.status(400).json({error: "Invalid request. Empty body."});
@@ -51,7 +52,7 @@ router.post('/register', async (req, res) => {
 });
 
 
-router.post('/login', async (req,res) =>{
+router.post('/login', loginValidator, handleValidationErrors, async (req: Request, res: Response) =>{
     if(!req.body)
     {
         res.status(400).json({error: "Invalid request. Empty or non present body."});
