@@ -33,21 +33,26 @@ router.post('/', authenticate, async (req, res) =>{
         res.status(400).json();
         return;
     }
-    const {name} = req.body;
+    const {name, icon} = req.body;
     const ownerId = req.userId;
     if(!name || !ownerId || name.trim() == "" || ownerId.trim() == "" || typeof ownerId != 'string' || typeof name != 'string')
     {
         res.status(400).json();
     }
     else{
-        let server = await ServerModel.create({
+        const serverData: any = {
             name: name,
             ownerId: new mongoose.Types.ObjectId(ownerId)
-        });
+        };
+        if (icon != null && icon.trim() !== "") {
+            serverData.icon = icon;
+        }
+        let server = await ServerModel.create(serverData);
         res.status(201).json({id: server._id.toString(),
                               name: server.name,
                               ownerId: ownerId,
-                              createdAt: server.createdAt} as Server);
+                              createdAt: server.createdAt,
+                              icon: server.icon} as Server);
     }
 });
 

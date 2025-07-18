@@ -10,7 +10,7 @@ export default async function validateServerMembership(req: Request, res: Respon
     const serverId = req.query?.serverId || req.params?.id || req.body?.serverId;
     const userId = req.userId;
     
-    if (!serverId || typeof serverId !== 'string' || serverId == null) {
+    if (!serverId || typeof serverId !== 'string' || serverId == null || serverId.trim() === "" || serverId === "undefined") {
         res.status(400).json({ error: "Missing or invalid serverId." });
         return;
     }

@@ -3,4 +3,5 @@ export interface Server {
     name: string;
     ownerId: string;
     createdAt: Date;
+    icon: string;
 }
