@@ -12,7 +12,7 @@ function ChannelButton(props: Readonly<Props>) {
     return (
         <button
             type="button"
-            className={`p-0.5 rounded-2xl transform duration-200 hover:bg-neutral-300/5 text-left ${props.isActive ? 'bg-gray-700' : ''}`}
+            className={`p-0.5 m-2 rounded-2xl transform duration-200 hover:bg-neutral-300/15 cursor-pointer text-left ${props.isActive ? 'bg-gray-700' : ''}`}
             onClick={() => props.onChannelSelect?.(props.channel)}
         >
             <svg
