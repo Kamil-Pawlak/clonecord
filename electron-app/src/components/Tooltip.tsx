@@ -9,7 +9,7 @@ export default function Tooltip({ message, children }: Readonly<TooltipProps>) {
     return (
     <div className="group relative flex">
         {children}
-        <span className="absolute left-12 scale-0 transition-all rounded bg-gray-700 p-2 text-xs text-white group-hover:scale-100">{message}</span>
+        <span className="absolute left-15 scale-0 transition-all rounded-2xl bg-gray-900 p-3 text-xs text-white group-hover:scale-100">{message}</span>
     </div>
     )
 }

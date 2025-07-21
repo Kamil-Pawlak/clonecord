@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import SideBar from './Sidebar';
 import ChannelsPanel from './ChannelsPanel';
 import MainArea from './MainArea';
-import {Channel} from '../types/channel';
-import {Server} from '../types/server';
+import { Channel } from '../types/channel';
+import { Server } from '../types/server';
 import CreateServerModal from './CreateServerModal';
+import FriendsPanel from './FriendsPannel';
 
 const Layout = () => {
 
@@ -17,14 +18,14 @@ const Layout = () => {
         <div className="flex h-screen">
             {isModalOpen && <CreateServerModal setIsModalOpen={setIsModalOpen} />}
             <SideBar
-            selectedServer={selectedServer}
-            onServerSelect={setSelectedServer}
-            setIsModalOpen={setIsModalOpen}/>
-            <ChannelsPanel
-            activeChannel={activeChannel}
-            onChannelSelect={setActiveChannel}
-            serverId={selectedServer?.id}
-            />
+                selectedServer={selectedServer}
+                onServerSelect={setSelectedServer}
+                setIsModalOpen={setIsModalOpen} />
+            {selectedServer === null ? <FriendsPanel /> : <ChannelsPanel
+                activeChannel={activeChannel}
+                onChannelSelect={setActiveChannel}
+                server={selectedServer}
+            />}
             <MainArea channel={activeChannel} />
         </div>
     )
