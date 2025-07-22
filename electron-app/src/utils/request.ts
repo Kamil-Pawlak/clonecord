@@ -42,7 +42,7 @@ async function request<TResponse>(
   }
 
   if (!res.ok) {
-    let message = 'unknown error';
+    let message;
     try{
       const errorBody = await res.json();
       message = errorBody.error ?? JSON.stringify(errorBody);
@@ -52,8 +52,8 @@ async function request<TResponse>(
     }
     throw new Error(`${message}`);
   }
-
-  return res.json() as Promise<TResponse>;
+  const text = await res.text();
+  return text ? JSON.parse(text) as TResponse : {} as TResponse;
 }
 
 export default request;
