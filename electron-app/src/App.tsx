@@ -3,6 +3,7 @@ import Layout from './components/Layout';
 import { getToken } from './utils/auth';
 import AuthPage from './pages/AuthPage';
 import { useEffect, useState } from 'react';
+import { ModalProvider } from './components/modal/ModalContext';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState<boolean | null>(null);
@@ -18,7 +19,7 @@ function App() {
 
   return (
     
-      loggedIn ? <Layout/>: <AuthPage/>
+      loggedIn ? <ModalProvider><Layout/></ModalProvider>: <AuthPage/>
     
   )
 }
