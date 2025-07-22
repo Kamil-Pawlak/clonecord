@@ -42,8 +42,12 @@ router.post('/', authenticate, validateServerMembership, async (req, res) => {
             serverId: new mongoose.Types.ObjectId(serverId),
             name: name.trim()
         };
-        await ChannelModel.create(channelData);
-        res.status(201).json();
+        const channel = await ChannelModel.create(channelData);
+        res.status(201).json({
+            id: channel._id.toString(),
+            name: channel.name,
+            serverId: channel.serverId.toString()
+        });
     }
    
 });
