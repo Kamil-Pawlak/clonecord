@@ -14,6 +14,7 @@
     "@uidotdev/usehooks": "^2.4.1",
     "dotenv": "^17.0.1",
     "electron-store": "^10.1.0",
+    "file-loader": "^6.2.0",
     "framer-motion": "^12.23.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -37,7 +38,8 @@
     "typescript": "^5.2.2",
     "vite": "^5.1.6",
     "vite-plugin-electron": "^0.28.6",
-    "vite-plugin-electron-renderer": "^0.14.5"
+    "vite-plugin-electron-renderer": "^0.14.5",
+    "vite-plugin-svgr": "^4.3.0"
   },
   "main": "dist-electron/main.js"
 }

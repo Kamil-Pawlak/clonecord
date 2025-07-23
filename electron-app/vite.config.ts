@@ -3,11 +3,21 @@ import path from 'node:path'
 import electron from 'vite-plugin-electron/simple'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
+import svgr from 'vite-plugin-svgr'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     react(),
+    svgr({
+      svgrOptions: {
+        // svgr options (https://react-svgr.com/docs/options/)
+        icon: true,
+        replaceAttrValues: { '#000': 'currentColor' },
+      },
+      // include: '**/*.svg',
+      // exclude: ['**/*.svg?component', '**/*.svg?raw'],
+    }),
     tailwindcss(),
     electron({
       main: {
