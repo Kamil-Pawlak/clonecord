@@ -1,50 +1,39 @@
 # clonecord
 
-A simple Discord clone. This project demonstrates core skills in building real-time communication applications and user interfaces.
+Clonecord is an educational project inspired by Discord.
+The main goal was to learn and practice new technologies by building a working web application.
 
-## Overview
+The project is not fully completed (for example, text chat has not been implemented yet), but it represents a functional MVP with core features already in place.
 
-clonecord replicates essential features of Discord such as text chats and user groups. It is designed to showcase development abilities in responsive web design and scalable architecture.
+## Project Goals
 
-## Features
+- Learn and apply React + TypeScript on the frontend.
+- Build a backend with Express.js and TypeScript.
+- Understand and use middleware in Express.
+- Implement authentication & authorization (JWT).
+- Design and use a REST API.
+- Integrate with MongoDB.
+- Work with reusable components and modals in React.
 
-- Real-time messaging
-- User authentication
-- Channel-based communication
-- Clean and modern interface
+## Current Features
+
+- User registration and login.
+- Server creation and management.
+- Global modal system (dynamic dialogs).
+- Backend with authentication and basic validation.
 
 ### Tech Stack
-- Electron + React (Vite) for desktop client
-- Express + MongoDB for backend API
-- JWT authentication
-- Jest/Supertest for backend testing
+- Frontend: React, TypeScript, Vite, TailwindCSS
+- Backend: Node.js, Express.js, TypeScript
+- Database: MongoDB
+- Testing: Jest, Supertest
+- Other: JWT, REST API, middleware
 
 ### Structure
 - `electron-app/` – client
 - `server/` – backend API
 
 
-## MVP Checklist
-
-- Authorization
-    - Registration (email + password)
-    - Login (JWT)
-    - Endpoint security (middleware)
-- User
-    - Change password
-    - Edit profile
-    - List of servers user joined
-- Servers
-    - Creating server
-    - Edit / delete server (only owner)
-    - Joining server with code or invite link
-- Channels
-    - Creating channels on server
-    - Edit / delete channels (owner/admin)
-    - list of channels in given server
-- Text chat
-    - Sending messages (POST)
-    - Downloading chat history (GET)
-    - Edit/ delete messages
-    - MVP version: refreshing every x seconds (polling)
-    - Bonus: WebSocket (socket.io) in later phases
+## Project Status
+This project was completed as an MVP – basic features are implemented, but it is not a fully finished product (chat is missing).
+The primary purpose was learning new technologies and building portfolio experience.
